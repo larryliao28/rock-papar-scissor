@@ -1,4 +1,30 @@
 
+const result = document.querySelector(".results"); 
+const buttons = document.querySelectorAll("btn");    
+const playerScore = document.querySelector("#player");
+const computerScore = document.querySelector("#computer");
+
+
+let pScore = 0;
+let cScore = 0; 
+let playerChoice = ""; 
+
+
+
+
+
+buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        if (pScore >= 5 || cScore >= 5) {
+            return; 
+        }
+        playerChoice = button.id; 
+        playRound(playerChoice, getComputerChoice()); 
+    })
+}); 
+
+
+
 //selects rock, paper, scissor randomly
 function getComputerChoice() {
     let choices = ["Rock", "Paper", "Scissor"];
@@ -6,29 +32,6 @@ function getComputerChoice() {
     return choices[result]; 
 }
 
-//play one round of rock, paper, scissor 
-function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
-    if (playerSelection === "rock" && computerSelection === "paper") {
-        return "You lose! Paper beats rock.";
-    } else if (playerSelection === "rock" && computerSelection === "scissor") {
-        return "You win! Rock beats scissor."
-    } else if (playerSelection === "paper" && computerSelection === "scissor") {
-        return "You lose! Scissor beats paper.";
-    } else if (playerSelection === "paper" && computerSelection === "rock") {
-        return "You win! Paper beats rock.";  
-    } else if (playerSelection === "scissor" && computerSelection === "rock") {
-        return "You lose! Rock beats scissor.";
-    } else if (playerSelection === "scissor" && computerSelection === "paper") {
-        return "You win! Paper beats scissor.";
-    } else if (playerSelection === computerSelection) {
-        return "Draw!";
-    } else {
-        return "Invalid input";  
-    }
-    
-}
 
 //play five round and reports the final winner
 function game() {
@@ -58,9 +61,56 @@ function game() {
     }
 }
 
-// const playerSelection = "rock";
-// const computerSelection = getComputerChoice();
-// console.log("user: " + playerSelection);
-// console.log("computer: " + computerSelection); 
-// console.log(playRound(playerSelection, computerSelection));
-console.log(game()); 
+//console.log(game());
+
+
+
+
+//play one round of rock, paper, scissor 
+function playRound(playerSelection, computerSelection) {
+    playerSelection = playerSelection.toLowerCase();
+    computerSelection = computerSelection.toLowerCase();
+    if (playerSelection === "rock" && computerSelection === "paper") {
+        result.textContent = "You lose! Paper beats rock.";
+        cScore++;  
+    } else if (playerSelection === "rock" && computerSelection === "scissor") {
+        result.textContent = "You win! Rock beats scissor."; 
+        pScore++; 
+    } else if (playerSelection === "paper" && computerSelection === "scissor") {
+        result.textContent = "You lose! Scissor beats paper."; 
+        cScore++; 
+    } else if (playerSelection === "paper" && computerSelection === "rock") {
+        result.textContent = "You win! Paper beats rock."; 
+        pScore++; 
+    } else if (playerSelection === "scissor" && computerSelection === "rock") {
+        result.textContent = "You lose! Rock beats scissor."; 
+        cScore++; 
+    } else if (playerSelection === "scissor" && computerSelection === "paper") {
+        result.textContent = "You win! Paper beats scissor."; 
+        pScore++; 
+    } else if (playerSelection === computerSelection) {
+        result.textContent = "Draw!";  
+    } else {
+        result.textContent = "Invalid input";    
+    }
+
+    playerScore.textContent = "Player score: " + pScore;
+    computerScore.textContent = "Computer score: " + cScore; 
+
+    if (pScore === 5) {
+        result.textContent = "You win the match! Click here to restart.";
+        result.onclick = () => {
+            window.location.reload();  
+        }  
+        
+    }
+
+    if (cScore === 5) {
+        result.textContent = "You win the match! Click here to restart."; 
+        result.onclick = () => {
+            window.location.reload();  
+        }  
+    }
+
+    
+}
